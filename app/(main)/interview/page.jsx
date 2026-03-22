@@ -1,6 +1,6 @@
 import { getAssessments } from "@/actions/interview";
 import StatsCards from "../_components/stats-cards";
-import PerformanceChart from "../_components/performance-chart.jsx";
+import PerformanceChart from "../_components/performance-chart";
 import QuizList from "../_components/quiz-list";
 
 export default async function InterviewPrepPage() {
@@ -13,6 +13,7 @@ export default async function InterviewPrepPage() {
           Interview Preparation
         </h1>
       </div>
+
       <div className="space-y-6">
         <StatsCards assessments={assessments} />
         <PerformanceChart assessments={assessments} />

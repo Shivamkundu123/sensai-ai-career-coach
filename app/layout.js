@@ -10,9 +10,9 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "AI Career Coach",
-  description: "",
+  description: "AI-powered platform to guide career decisions",
   icons: {
-    icon: "/logo.png", // make sure this exists in /public
+    icon: "/favicon.ico", // ✅ use proper favicon from /public
   },
 };
 

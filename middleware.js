@@ -12,7 +12,7 @@ export default clerkMiddleware((auth, req) => {
   if (isProtectedRoute(req)) {
     return auth().protect();
   }
-}); // ✅ now properly closed
+}); 
 
 export const config = {
   matcher: [

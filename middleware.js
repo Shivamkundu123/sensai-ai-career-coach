@@ -1,25 +1,24 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher([
-  "/dashboard/:path*",
-    "/resume/:path*",
-    "/interview/:path*",
-    "/ai-cover-letter/:path*",
-    "/onboarding/:path*",
+  "/dashboard(.*)",
+  "/resume(.*)",
+  "/interview(.*)",
+  "/ai-cover-letter(.*)",
+  "/onboarding(.*)",
 ]);
 
-export default clerkMiddleware((auth, req) => {
+export default clerkMiddleware(async (auth, req) => {
+  // If the route is protected, auth.protect() will 
+  // automatically redirect unauthenticated users to sign-in.
   if (isProtectedRoute(req)) {
-    return auth().protect(); // ✅ correct
+    await auth.protect();
   }
 });
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/resume/:path*",
-    "/interview/:path*",
-    "/ai-cover-letter/:path*",
-    "/onboarding/:path*",
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/(api|trpc)(.*)",
   ],
 };

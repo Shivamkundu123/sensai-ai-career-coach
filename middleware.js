@@ -12,7 +12,7 @@ export default clerkMiddleware(async (auth, req) => {
   // If the route is protected, auth.protect() will 
   // automatically redirect unauthenticated users to sign-in.
   if (isProtectedRoute(req)) {
-   return NextResponse.next();
+    await auth.protect();
   }
 });
 

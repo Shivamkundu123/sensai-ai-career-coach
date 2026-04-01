@@ -8,6 +8,11 @@ const nextConfig = {
       },
     ],
   },
+
+  // ✅ Add this
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;

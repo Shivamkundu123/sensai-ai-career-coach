@@ -4,6 +4,15 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 First, run the development server:
 
+cd sensai-ai-career-coach
+
+npm install inngest@^3.54.0
+
+git add package.json package-lock.json
+git commit -m "fix: update inngest to latest version"
+
+git push origin main
+
 ```bash
 npm run dev
 # or

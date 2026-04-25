@@ -32,10 +32,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "html2pdf.js": "^0.14.0",
-
-    // ✅ FIXED HERE
     "inngest": "3.54.0",
-
     "lucide-react": "^0.471.1",
     "next": "^15.5.12",
     "next-themes": "^0.4.4",
@@ -51,7 +48,6 @@
     "zod": "^3.24.1"
   },
 
-  // ✅ ADD THIS (IMPORTANT)
   "overrides": {
     "inngest": "3.54.0"
   },
@@ -67,8 +63,10 @@
     "postcss": "^8",
     "prisma": "^6.19.2",
     "tailwindcss": "^3.4.1",
-
-    // ✅ ADD (required for inngest)
     "typescript": "^5.8.0"
+  },
+
+  "engines": {
+    "node": "20.x"
   }
 }

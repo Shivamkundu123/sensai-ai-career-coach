@@ -2,6 +2,7 @@
   "name": "ai-career-coach",
   "version": "0.1.0",
   "private": true,
+
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -9,6 +10,7 @@
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
+
   "dependencies": {
     "@clerk/nextjs": "^6.9.10",
     "@clerk/themes": "^2.2.5",
@@ -30,7 +32,10 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "html2pdf.js": "^0.14.0",
-    "inngest": "^3.29.3",
+
+    // ✅ FIXED HERE
+    "inngest": "3.54.0",
+
     "lucide-react": "^0.471.1",
     "next": "^15.5.12",
     "next-themes": "^0.4.4",
@@ -45,6 +50,12 @@
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1"
   },
+
+  // ✅ ADD THIS (IMPORTANT)
+  "overrides": {
+    "inngest": "3.54.0"
+  },
+
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/estree": "^1.0.8",
@@ -55,6 +66,9 @@
     "eslint-config-next": "15.1.4",
     "postcss": "^8",
     "prisma": "^6.19.2",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+
+    // ✅ ADD (required for inngest)
+    "typescript": "^5.8.0"
   }
 }

@@ -8,11 +8,9 @@ const isProtectedRoute = createRouteMatcher([
   "/onboarding(.*)",
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
-  // If the route is protected, auth.protect() will 
-  // automatically redirect unauthenticated users to sign-in.
+export default clerkMiddleware((auth, req) => {
   if (isProtectedRoute(req)) {
-    await auth.protect();
+    auth().protect(); // ✅ correct usage
   }
 });
 

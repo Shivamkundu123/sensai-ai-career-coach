@@ -14,11 +14,7 @@ git commit -m "fix: update inngest to latest version"
 git push origin main
 
 ```bash
-npm install inngest@3.54.0
-npm list inngest
-git add package.json package-lock.json
-git commit -m "fix: upgrade inngest"
-git push origin main
+
 
 npm run dev
 # or

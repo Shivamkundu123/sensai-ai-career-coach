@@ -9,60 +9,51 @@ export async function updateUser(data) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  // 1️⃣ Fetch user first
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
-
   if (!user) throw new Error("User not found");
 
   try {
-    // Start a transaction to handle both operations
-    const result = await db.$transaction(
-      async (tx) => {
-        // First check if industry exists
-        let industryInsight = await tx.industryInsight.findUnique({
-          where: {
-            industry: data.industry,
-          },
-        });
+    // 2️⃣ Check if industry insight exists
+    let industryInsight = await db.industryInsight.findUnique({
+      where: { industry: data.industry },
+    });
 
-        // If industry doesn't exist, create it with default values
-        if (!industryInsight) {
-          const insights = await generateAIInsights(data.industry);
+    // 3️⃣ If it doesn't exist, do slow work outside transaction
+    if (!industryInsight) {
+      const insights = await generateAIInsights(data.industry); // slow API call
 
-          industryInsight = await db.industryInsight.create({
-            data: {
-              industry: data.industry,
-              ...insights,
-              nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-            },
-          });
-        }
+      // 4️⃣ Save new industry insight (fast DB write)
+      industryInsight = await db.industryInsight.create({
+        data: {
+          industry: data.industry,
+          ...insights,
+          nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        },
+      });
+    }
 
-        // Now update the user
-        const updatedUser = await tx.user.update({
-          where: {
-            id: user.id,
-          },
-          data: {
-            industry: data.industry,
-            experience: data.experience,
-            bio: data.bio,
-            skills: data.skills,
-          },
-        });
+    // 5️⃣ Update user in a short transaction
+    const updatedUser = await db.$transaction(async (tx) => {
+      return await tx.user.update({
+        where: { id: user.id },
+        data: {
+          industry: data.industry,
+          experience: data.experience,
+          bio: data.bio,
+          skills: data.skills,
+        },
+      });
+    });
 
-        return { updatedUser, industryInsight };
-      },
-      {
-        timeout: 10000, // default: 5000
-      }
-    );
-
+    // 6️⃣ Revalidate cache
     revalidatePath("/");
-    return result.user;
+
+    return updatedUser;
   } catch (error) {
-    console.error("Error updating user and industry:", error.message);
+    console.error("Error updating user and industry:", error);
     throw new Error("Failed to update profile");
   }
 }
@@ -71,20 +62,10 @@ export async function getUserOnboardingStatus() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await db.user.findUnique({
-    where: { clerkUserId: userId },
-  });
-
-  if (!user) throw new Error("User not found");
-
   try {
     const user = await db.user.findUnique({
-      where: {
-        clerkUserId: userId,
-      },
-      select: {
-        industry: true,
-      },
+      where: { clerkUserId: userId },
+      select: { industry: true },
     });
 
     return {
